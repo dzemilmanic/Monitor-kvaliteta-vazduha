@@ -6,6 +6,9 @@ export const fetchAirQuality = async (city) => {
       console.log('Dohvatanje podataka iz SEPA za stanicu:', city.sepaStationId);
       const measurements = await fetchSepaMeasurements(city.sepaStationId);
       console.log('SEPA mjerenja:', measurements);
+      if (!measurements || measurements.length === 0) {
+        throw new Error('Trenutno nema dostupnih podataka za ovu stanicu.');
+      }
       return normalizeSepaData(measurements);
     } else if (city.lat && city.lng) {
       console.log('Dohvatanje podataka iz Open-Meteo za:', city.lat, city.lng);

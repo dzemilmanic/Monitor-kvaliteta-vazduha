@@ -1,4 +1,4 @@
-import { AlertCircle, Wind, Droplets, Cloud, Factory, Flame, Activity } from 'lucide-react';
+import { AlertCircle, Wind, Droplets, Cloud, Factory, Flame, Activity, CloudOff } from 'lucide-react';
 import './AirQualityDisplay.css';
 
 const AirQualityDisplay = ({ data, loading, error }) => {
@@ -12,15 +12,23 @@ const AirQualityDisplay = ({ data, loading, error }) => {
   }
 
   if (error) {
+    const isNoData = error.message.includes('nema dostupnih podataka');
+    
     return (
       <div className="error">
-        <AlertCircle size={48} />
-        <p>Greška: {error.message}</p>
+        {isNoData ? <CloudOff size={48} /> : <AlertCircle size={48} />}
+        <p>{error.message}</p>
+        {isNoData && <p className="error-subtext">Pokušajte ponovo kasnije.</p>}
       </div>
     );
   }
 
-  if (!data) {
+  // Check if we have data but all values are null (defensive check)
+  const hasNoValues = data && Object.values(data).every(val => 
+    val === null || typeof val === 'string' || (typeof val === 'object' && val !== null && Object.values(val).every(v => v === null))
+  );
+
+  if (!data || hasNoValues) {
     return (
       <div className="placeholder">
         <Cloud size={64} className="placeholder-icon" />

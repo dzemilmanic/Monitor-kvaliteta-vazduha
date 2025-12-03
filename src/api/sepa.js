@@ -5,6 +5,7 @@ export const fetchSepaMeasurements = async (stationId) => {
       throw new Error('Neuspješno dohvatanje SEPA podataka');
     }
     const data = await response.json();
+    console.log("RAW SEPA RESPONSE:", data);
 
     const stationMeasurements = data.filter(
       (m) => m.k_station_id === stationId
