@@ -203,7 +203,7 @@ const AirQualityDisplay = ({ data, loading, error }) => {
       </div>
 
       <div className="pollutants-section">
-        <h3 className="section-title">Suspendovane Čestice</h3>
+        <h3 className="section-title">Suspendovane čestice</h3>
         <div className="pollutants-grid particles">
           {particlesData.map((pollutant) => {
             const quality = getQualityLevel(pollutant.key, pollutant.value);
