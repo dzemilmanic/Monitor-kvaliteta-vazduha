@@ -1,0 +1,449 @@
+.air-quality-display {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2.5rem;
+  animation: fadeIn 0.6s ease-in;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.data-source {
+  font-size: 0.95rem;
+  color: #558b2f;
+  padding: 0.75rem 1.5rem;
+  background: rgba(255, 255, 255, 0.9);
+  border-radius: 20px;
+  backdrop-filter: blur(10px);
+  box-shadow: 0 4px 12px rgba(56, 142, 60, 0.15);
+  border: 2px solid rgba(139, 195, 74, 0.3);
+}
+
+.overall-status {
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(255, 255, 255, 0.85) 100%);
+  padding: 3rem;
+  border-radius: 24px;
+  text-align: center;
+  border: 4px solid;
+  box-shadow: 0 12px 40px rgba(56, 142, 60, 0.2);
+  transition: all 0.3s ease;
+  animation: scaleIn 0.5s ease-out;
+  min-width: 280px;
+}
+
+.overall-status:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 16px 50px rgba(56, 142, 60, 0.3);
+}
+
+.overall-status h2 {
+  font-size: 2rem;
+  margin: 1rem 0 0.5rem 0;
+  font-weight: 700;
+  letter-spacing: 1px;
+}
+
+.overall-label {
+  font-size: 1.8rem;
+  font-weight: 800;
+  margin-top: 0.5rem;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+}
+
+.pollutants-section {
+  width: 100%;
+  max-width: 1200px;
+}
+
+.section-title {
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: #2e7d32;
+  margin-bottom: 1.5rem;
+  text-align: center;
+  letter-spacing: 0.5px;
+}
+
+.pollutants-grid {
+  display: grid;
+  gap: 1.5rem;
+  width: 100%;
+}
+
+.pollutants-grid.particles {
+  grid-template-columns: repeat(2, 1fr);
+}
+
+.pollutants-grid.gases {
+  grid-template-columns: repeat(4, 1fr);
+}
+
+.pollutant-card {
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(255, 255, 255, 0.85) 100%);
+  padding: 1.8rem;
+  border-radius: 16px;
+  border-left: 5px solid;
+  box-shadow: 0 6px 20px rgba(56, 142, 60, 0.15);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
+  backdrop-filter: blur(10px);
+}
+
+.pollutant-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: inherit;
+  opacity: 0.5;
+}
+
+.pollutant-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 30px rgba(56, 142, 60, 0.25);
+}
+
+.pollutant-header {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 0.5rem;
+}
+
+.pollutant-header h4 {
+  margin: 0;
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: #33691e;
+}
+
+.pollutant-description {
+  font-size: 0.85rem;
+  color: #689f38;
+  margin-bottom: 1rem;
+}
+
+.pollutant-value {
+  font-size: 2.5rem;
+  font-weight: 800;
+  margin: 0.5rem 0;
+  line-height: 1;
+}
+
+.pollutant-unit {
+  font-size: 0.9rem;
+  color: #7cb342;
+  margin-bottom: 1rem;
+}
+
+.pollutant-status {
+  display: inline-block;
+  padding: 0.5rem 1.2rem;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: white;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  box-shadow: 0 3px 12px rgba(0, 0, 0, 0.2);
+}
+
+.info-tables {
+  width: 100%;
+  max-width: 1200px;
+  margin-top: 2rem;
+}
+
+.info-tables h3 {
+  text-align: center;
+  font-size: 2rem;
+  font-weight: 700;
+  color: #2e7d32;
+  margin-bottom: 2rem;
+  letter-spacing: 1px;
+}
+
+.tables-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+  gap: 2rem;
+  margin-bottom: 2rem;
+}
+
+.info-table {
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(255, 255, 255, 0.85) 100%);
+  padding: 2rem;
+  border-radius: 16px;
+  box-shadow: 0 6px 20px rgba(56, 142, 60, 0.15);
+  backdrop-filter: blur(10px);
+}
+
+.info-table h4 {
+  color: #2e7d32;
+  font-size: 1.3rem;
+  margin-bottom: 1.5rem;
+  font-weight: 700;
+  text-align: center;
+  letter-spacing: 0.5px;
+}
+
+.info-table table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.info-table th {
+  background: rgba(139, 195, 74, 0.25);
+  color: #2e7d32;
+  padding: 1rem;
+  text-align: left;
+  font-weight: 700;
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  border-bottom: 2px solid #558b2f;
+}
+
+.info-table td {
+  padding: 0.9rem 1rem;
+  color: #33691e;
+  border-bottom: 1px solid rgba(139, 195, 74, 0.2);
+  font-weight: 500;
+}
+
+.info-table tbody tr {
+  transition: all 0.2s ease;
+}
+
+.info-table tbody tr:hover {
+  background: rgba(139, 195, 74, 0.1);
+  transform: scale(1.02);
+}
+
+.excellent-row {
+  border-left: 4px solid #22c55e;
+}
+
+.good-row {
+  border-left: 4px solid #84cc16;
+}
+
+.moderate-row {
+  border-left: 4px solid #eab308;
+}
+
+.poor-row {
+  border-left: 4px solid #f97316;
+}
+
+.verypoor-row {
+  border-left: 4px solid #ef4444;
+}
+
+.hazardous-row {
+  border-left: 4px solid #991b1b;
+}
+
+.health-info {
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(255, 255, 255, 0.85) 100%);
+  padding: 2rem;
+  border-radius: 16px;
+  box-shadow: 0 6px 20px rgba(56, 142, 60, 0.15);
+  margin-top: 2rem;
+  backdrop-filter: blur(10px);
+}
+
+.health-info h4 {
+  color: #2e7d32;
+  font-size: 1.5rem;
+  margin-bottom: 1.5rem;
+  font-weight: 700;
+  text-align: center;
+  letter-spacing: 0.5px;
+}
+
+.health-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1rem;
+}
+
+.health-item {
+  padding: 1.2rem;
+  border-radius: 12px;
+  color: white;
+  font-size: 0.95rem;
+  line-height: 1.6;
+  box-shadow: 0 3px 12px rgba(0, 0, 0, 0.2);
+  transition: all 0.3s ease;
+}
+
+.health-item:hover {
+  transform: translateX(5px);
+  box-shadow: 0 5px 18px rgba(0, 0, 0, 0.3);
+}
+
+.health-item strong {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-size: 1.05rem;
+  letter-spacing: 0.5px;
+}
+
+.excellent-bg {
+  background: linear-gradient(135deg, #22c55e 0%, #16a34a 100%);
+}
+
+.good-bg {
+  background: linear-gradient(135deg, #84cc16 0%, #65a30d 100%);
+}
+
+.moderate-bg {
+  background: linear-gradient(135deg, #eab308 0%, #ca8a04 100%);
+}
+
+.poor-bg {
+  background: linear-gradient(135deg, #f97316 0%, #ea580c 100%);
+}
+
+.verypoor-bg {
+  background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+}
+
+.hazardous-bg {
+  background: linear-gradient(135deg, #991b1b 0%, #7f1d1d 100%);
+}
+
+.loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
+  font-size: 1.3rem;
+  margin-top: 3rem;
+  color: #2e7d32;
+}
+
+.spinner {
+  width: 60px;
+  height: 60px;
+  border: 5px solid rgba(139, 195, 74, 0.3);
+  border-top-color: #558b2f;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+.error {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  font-size: 1.3rem;
+  margin-top: 3rem;
+  color: #c62828;
+  padding: 2rem;
+  background: rgba(239, 83, 80, 0.1);
+  border-radius: 16px;
+  border: 2px solid #ef5350;
+}
+
+.placeholder {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
+  font-size: 1.3rem;
+  margin-top: 3rem;
+  color: #558b2f;
+  padding: 3rem;
+  background: rgba(255, 255, 255, 0.6);
+  border-radius: 16px;
+  border: 2px dashed rgba(139, 195, 74, 0.4);
+}
+
+.placeholder-icon {
+  opacity: 0.6;
+  animation: float 3s ease-in-out infinite;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes scaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+@media (max-width: 1024px) {
+  .pollutants-grid.gases {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .tables-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .info-table table {
+    font-size: 0.85rem;
+  }
+
+  .info-table th,
+  .info-table td {
+    padding: 0.6rem;
+  }
+
+  .pollutants-grid.particles {
+    grid-template-columns: 1fr;
+  }
+
+  .pollutants-grid.gases {
+    grid-template-columns: 1fr;
+  }
+
+  .overall-status {
+    padding: 2rem;
+  }
+
+  .overall-status h2 {
+    font-size: 1.5rem;
+  }
+
+  .overall-label {
+    font-size: 1.4rem;
+  }
+}
