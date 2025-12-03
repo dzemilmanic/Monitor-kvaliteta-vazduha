@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import './App.css';
+import Navbar from './components/Navbar.jsx';
 import Loader from './components/Loader.jsx';
 import AirQualityDisplay from './components/AirQualityDisplay.jsx';
 import { fetchAirQuality } from './api/airQuality';
@@ -45,21 +46,24 @@ function App() {
   }
 
   return (
-    <div className="app-container">
-      <header className="app-header">
-        <div className="header-content">
-          <div className="header-badge">Uživo</div>
-          <h1>Monitor kvaliteta vazduha</h1>
-          <p className="app-subtitle">Novi Pazar - Praćenje zagađenja u realnom vremenu</p>
-          <div className="header-pulse"></div>
-        </div>
-      </header>
-      <AirQualityDisplay data={airQualityData} loading={loading} error={error} />
-      <footer className="app-footer">
-        <p>Podaci se ažuriraju svaki sat | Izvor: SEPA (Agencija za zaštitu životne sredine)</p>
-        <p>Izradio: <a href="https://instagram.com/dzemilmanic" target='blank'>Džemil Manić</a></p>
-      </footer>
-    </div>
+    <>
+      <Navbar />
+      <div className="app-container">
+        <header id="header" className="app-header">
+          <div className="header-content">
+            <div className="header-badge">Uživo</div>
+            <h1>Monitor kvaliteta vazduha</h1>
+            <p className="app-subtitle">Novi Pazar - Praćenje zagađenja u realnom vremenu</p>
+            <div className="header-pulse"></div>
+          </div>
+        </header>
+        <AirQualityDisplay data={airQualityData} loading={loading} error={error} />
+        <footer className="app-footer">
+          <p>Podaci se ažuriraju svaki sat | Izvor: SEPA (Agencija za zaštitu životne sredine)</p>
+          <p>Izradio: <a href="https://instagram.com/dzemilmanic" target='blank'>Džemil Manić</a></p>
+        </footer>
+      </div>
+    </>
   );
 }
 
