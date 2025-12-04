@@ -61,6 +61,7 @@ function App() {
         <footer className="app-footer">
           <p>Podaci se ažuriraju svaki sat | Izvor: SEPA (Agencija za zaštitu životne sredine)</p>
           <p>Izradio: <a href="https://instagram.com/dzemilmanic" target='blank'>Džemil Manić</a></p>
+          <p><a href="https://www.buymeacoffee.com/dzemil" target='blank'>Buy me a coffee</a></p>
         </footer>
       </div>
     </>
