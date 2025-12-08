@@ -7,7 +7,7 @@ export const fetchAirQuality = async (city) => {
       const measurements = await fetchSepaMeasurements(city.sepaStationId);
       console.log('SEPA mjerenja:', measurements);
       if (!measurements || measurements.length === 0) {
-        throw new Error('Trenutno nema dostupnih podataka za ovu stanicu.');
+        throw new Error('Stanica za merenje kvaliteta vazduha trenutno nije u funkciji.');
       }
       return normalizeSepaData(measurements);
     } else if (city.lat && city.lng) {
