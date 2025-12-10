@@ -202,7 +202,7 @@ const AirQualityDisplay = ({ data, loading, error }) => {
         Izvor: <strong>{data.source}</strong>
       </div>
 
-      <div className={`overall-status ${overall.level}`} style={{ borderColor: overall.color }}>
+      <div id="overall" className={`overall-status ${overall.level}`} style={{ borderColor: overall.color }}>
         <Activity size={64} style={{ color: overall.color }} />
         <h2 style={{ color: overall.color }}>Kvalitet Vazduha</h2>
         <div className="overall-label" style={{ color: overall.color }}>
@@ -210,7 +210,7 @@ const AirQualityDisplay = ({ data, loading, error }) => {
         </div>
       </div>
 
-      <div className="pollutants-section">
+      <div id="particles" className="pollutants-section">
         <h3 className="section-title">Suspendovane čestice</h3>
         <div className="pollutants-grid particles">
           {particlesData.map((pollutant) => {
@@ -241,7 +241,7 @@ const AirQualityDisplay = ({ data, loading, error }) => {
         </div>
       </div>
 
-      <div className="pollutants-section">
+      <div id="gases" className="pollutants-section">
         <h3 className="section-title">Gasovi</h3>
         <div className="pollutants-grid gases">
           {gasesData.map((pollutant) => {
@@ -272,7 +272,7 @@ const AirQualityDisplay = ({ data, loading, error }) => {
         </div>
       </div>
 
-      <div className="info-tables">
+      <div id="limits" className="info-tables">
         <h3>Granične vrijednosti (WHO smjernice)</h3>
 
         <div className="tables-grid">
@@ -374,7 +374,7 @@ const AirQualityDisplay = ({ data, loading, error }) => {
           </div>
         </div>
 
-        <div className="health-info">
+        <div id="health" className="health-info">
           <h4>Zdravstvene preporuke</h4>
           <div className="health-grid">
             <div className="health-item excellent-bg">
