@@ -1,0 +1,217 @@
+.historical-data-section {
+  margin-top: 3rem;
+  padding: 2rem;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(232, 245, 233, 0.8) 100%);
+  border-radius: 24px;
+  border: 1px solid rgba(85, 139, 47, 0.2);
+  backdrop-filter: blur(10px);
+  box-shadow: 0 12px 48px rgba(56, 142, 60, 0.2);
+  position: relative;
+  overflow: hidden;
+}
+
+.historical-data-section::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, #22c55e, #84cc16, #eab308, #84cc16, #22c55e);
+  background-size: 200% 100%;
+  animation: gradientMove 3s ease infinite;
+}
+
+.historical-title {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #1b5e20;
+  margin-bottom: 1.5rem;
+  padding-bottom: 1rem;
+  border-bottom: 2px solid rgba(85, 139, 47, 0.2);
+}
+
+.historical-table-container {
+  overflow-x: auto;
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.5);
+  box-shadow: 0 4px 16px rgba(56, 142, 60, 0.1);
+}
+
+.historical-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.95rem;
+}
+
+.historical-table thead {
+  background: linear-gradient(135deg, rgba(46, 125, 50, 0.15) 0%, rgba(85, 139, 47, 0.15) 100%);
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.historical-table th {
+  padding: 1.25rem 1rem;
+  text-align: center;
+  font-weight: 700;
+  color: #1b5e20;
+  border-bottom: 2px solid rgba(85, 139, 47, 0.3);
+  white-space: nowrap;
+  text-transform: uppercase;
+  font-size: 0.9rem;
+  letter-spacing: 0.5px;
+}
+
+.historical-table th:first-child {
+  text-align: left;
+  padding-left: 1.5rem;
+}
+
+.unit-label {
+  font-size: 0.7rem;
+  font-weight: 500;
+  opacity: 0.8;
+  text-transform: none;
+}
+
+.historical-table tbody tr {
+  transition: all 0.3s ease;
+  border-bottom: 1px solid rgba(85, 139, 47, 0.1);
+}
+
+.historical-table tbody tr:hover {
+  background: linear-gradient(135deg, rgba(139, 195, 74, 0.1) 0%, rgba(156, 204, 101, 0.1) 100%);
+  transform: translateX(4px);
+  box-shadow: -4px 0 0 0 #84cc16;
+}
+
+.historical-table tbody tr:last-child {
+  border-bottom: none;
+}
+
+.historical-table td {
+  padding: 1rem;
+  color: #2e7d32;
+  font-weight: 600;
+  text-align: center;
+  font-size: 1rem;
+}
+
+.historical-table td:first-child {
+  text-align: left;
+  padding-left: 1.5rem;
+}
+
+.time-cell {
+  font-weight: 700;
+  color: #558b2f !important;
+  white-space: nowrap;
+  font-size: 0.95rem;
+}
+
+.no-data-row {
+  background: rgba(239, 68, 68, 0.08);
+}
+
+.no-data-row:hover {
+  background: rgba(239, 68, 68, 0.12);
+  box-shadow: -4px 0 0 0 #ef4444;
+}
+
+.no-data-cell {
+  text-align: center !important;
+  color: #dc2626 !important;
+  font-style: italic;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  font-weight: 600;
+}
+
+.historical-loading,
+.historical-error {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  gap: 1rem;
+  color: #558b2f;
+  opacity: 0.8;
+}
+
+.historical-error {
+  color: #dc2626;
+}
+
+@keyframes gradientMove {
+  0%, 100% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .historical-data-section {
+    padding: 1.5rem;
+    margin-top: 2rem;
+  }
+
+  .historical-title {
+    font-size: 1.25rem;
+  }
+
+  .historical-table {
+    font-size: 0.9rem;
+  }
+
+  .historical-table th,
+  .historical-table td {
+    padding: 0.85rem 0.6rem;
+  }
+
+  .historical-table th:first-child,
+  .historical-table td:first-child {
+    padding-left: 1rem;
+  }
+
+  .time-cell {
+    font-size: 0.85rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .historical-data-section {
+    padding: 1rem;
+  }
+
+  .historical-table {
+    font-size: 0.85rem;
+  }
+
+  .historical-table th,
+  .historical-table td {
+    padding: 0.7rem 0.4rem;
+  }
+
+  .historical-table th:first-child,
+  .historical-table td:first-child {
+    padding-left: 0.75rem;
+  }
+
+  .unit-label {
+    font-size: 0.65rem;
+  }
+
+  .time-cell {
+    font-size: 0.8rem;
+  }
+}

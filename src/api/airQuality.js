@@ -1,4 +1,4 @@
-import { fetchSepaMeasurements } from './sepa';
+import { fetchSepaMeasurements, fetchSepaHistoricalMeasurements } from './sepa';
 
 export const fetchAirQuality = async (city) => {
   try {
@@ -98,4 +98,38 @@ const normalizeOpenMeteoData = (data) => {
       ozone: current_units.ozone
     }
   };
+};
+
+export const fetchHistoricalAirQuality = async (city) => {
+  try {
+    if (city.sepaStationId) {
+      console.log('Dohvatanje istorijskih podataka iz SEPA za stanicu:', city.sepaStationId);
+      const hourlyData = await fetchSepaHistoricalMeasurements(city.sepaStationId);
+      
+      // Normalizujemo podatke za svaki sat
+      const normalizedHistory = hourlyData.map(hourData => {
+        if (!hourData.hasData) {
+          return {
+            timestamp: hourData.timestamp,
+            hasData: false,
+            data: null
+          };
+        }
+        
+        return {
+          timestamp: hourData.timestamp,
+          hasData: true,
+          data: normalizeSepaData(hourData.measurements)
+        };
+      });
+      
+      return normalizedHistory;
+    } else {
+      // Za Open-Meteo ne podržavamo istorijske podatke
+      return [];
+    }
+  } catch (error) {
+    console.error('Greška pri dohvatanju istorijskih podataka:', error);
+    throw error;
+  }
 };
