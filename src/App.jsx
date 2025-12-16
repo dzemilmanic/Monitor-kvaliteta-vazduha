@@ -2,19 +2,35 @@ import { useState, useEffect } from 'react';
 import './App.css';
 import Navbar from './components/Navbar.jsx';
 import Loader from './components/Loader.jsx';
-import AirQualityDisplay from './components/AirQualityDisplay.jsx';
-import HistoricalDataDisplay from './components/HistoricalDataDisplay.jsx';
+import StationDisplay from './components/StationDisplay.jsx';
 import { fetchAirQuality, fetchHistoricalAirQuality } from './api/airQuality';
 
-const NOVI_PAZAR = { name: 'Novi Pazar', lat: 43.1367, lng: 20.5122, sepaStationId: 71 };
+const SEPA_STATION = { 
+  name: 'SEPA Stanica', 
+  source: 'SEPA',
+  sepaStationId: 71 
+};
+
+const WAQI_STATION = { 
+  name: 'Citizen Science', 
+  source: 'sensor.community',
+  waqiStationId: 12894 
+};
 
 function App() {
-  const [airQualityData, setAirQualityData] = useState(null);
-  const [historicalData, setHistoricalData] = useState(null);
-  const [loading, setLoading] = useState(false);
-  const [historicalLoading, setHistoricalLoading] = useState(false);
-  const [error, setError] = useState(null);
-  const [historicalError, setHistoricalError] = useState(null);
+  // SEPA station state
+  const [sepaData, setSepaData] = useState(null);
+  const [sepaHistoricalData, setSepaHistoricalData] = useState(null);
+  const [sepaLoading, setSepaLoading] = useState(false);
+  const [sepaHistoricalLoading, setSepaHistoricalLoading] = useState(false);
+  const [sepaError, setSepaError] = useState(null);
+  const [sepaHistoricalError, setSepaHistoricalError] = useState(null);
+
+  // WAQI station state
+  const [waqiData, setWaqiData] = useState(null);
+  const [waqiLoading, setWaqiLoading] = useState(false);
+  const [waqiError, setWaqiError] = useState(null);
+
   const [showLoader, setShowLoader] = useState(true);
 
   useEffect(() => {
@@ -27,29 +43,43 @@ function App() {
 
   useEffect(() => {
     if (!showLoader) {
-      setLoading(true);
-      setError(null);
-      fetchAirQuality(NOVI_PAZAR)
+      // Fetch SEPA station data
+      setSepaLoading(true);
+      setSepaError(null);
+      fetchAirQuality(SEPA_STATION)
         .then((data) => {
-          setAirQualityData(data);
-          setLoading(false);
+          setSepaData(data);
+          setSepaLoading(false);
         })
         .catch((err) => {
-          setError(err);
-          setLoading(false);
+          setSepaError(err);
+          setSepaLoading(false);
         });
       
-      // Dohvatanje istorijskih podataka
-      setHistoricalLoading(true);
-      setHistoricalError(null);
-      fetchHistoricalAirQuality(NOVI_PAZAR)
+      // Fetch SEPA historical data
+      setSepaHistoricalLoading(true);
+      setSepaHistoricalError(null);
+      fetchHistoricalAirQuality(SEPA_STATION)
         .then((data) => {
-          setHistoricalData(data);
-          setHistoricalLoading(false);
+          setSepaHistoricalData(data);
+          setSepaHistoricalLoading(false);
         })
         .catch((err) => {
-          setHistoricalError(err);
-          setHistoricalLoading(false);
+          setSepaHistoricalError(err);
+          setSepaHistoricalLoading(false);
+        });
+
+      // Fetch WAQI station data
+      setWaqiLoading(true);
+      setWaqiError(null);
+      fetchAirQuality(WAQI_STATION)
+        .then((data) => {
+          setWaqiData(data);
+          setWaqiLoading(false);
+        })
+        .catch((err) => {
+          setWaqiError(err);
+          setWaqiLoading(false);
         });
     }
   }, [showLoader]);
@@ -70,18 +100,37 @@ function App() {
           <div className="header-content">
             <div className="header-badge">Uživo</div>
             <h1>Monitor kvaliteta vazduha</h1>
-            <p className="app-subtitle">Novi Pazar - Praćenje zagađenja u realnom vremenu</p>
+            <p className="app-subtitle">Novi Pazar - Uporedna analiza stanica</p>
             <div className="header-pulse"></div>
           </div>
         </header>
-        <AirQualityDisplay data={airQualityData} loading={loading} error={error} />
-        <HistoricalDataDisplay 
-          historicalData={historicalData} 
-          loading={historicalLoading} 
-          error={historicalError} 
-        />
+
+        <div className="stations-container">
+          <StationDisplay 
+            stationName={SEPA_STATION.name}
+            source={SEPA_STATION.source}
+            airQualityData={sepaData}
+            historicalData={sepaHistoricalData}
+            loading={sepaLoading}
+            error={sepaError}
+            historicalLoading={sepaHistoricalLoading}
+            historicalError={sepaHistoricalError}
+          />
+          
+          <StationDisplay 
+            stationName={WAQI_STATION.name}
+            source={WAQI_STATION.source}
+            airQualityData={waqiData}
+            historicalData={null}
+            loading={waqiLoading}
+            error={waqiError}
+            historicalLoading={false}
+            historicalError={null}
+          />
+        </div>
+
         <footer className="app-footer">
-          <p>Podaci se ažuriraju svaki sat | Izvor: SEPA (Agencija za zaštitu životne sredine)</p>
+          <p>Podaci se ažuriraju svaki sat | Izvori: SEPA i sensor.community</p>
           <p>Izradio: <a href="https://instagram.com/dzemilmanic" target='blank'>Džemil Manić</a></p>
           <p><a href="https://www.buymeacoffee.com/dzemil" target='blank'>Viči kahvu</a></p>
         </footer>

@@ -39,6 +39,15 @@ body {
   flex-direction: column;
 }
 
+.stations-container {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 2.5rem;
+  width: 100%;
+  margin-bottom: 2rem;
+  animation: fadeIn 0.6s ease-in;
+}
+
 .app-header {
   text-align: center;
   margin-bottom: 3rem;
@@ -223,6 +232,11 @@ a:hover {
 @media (max-width: 768px) {
   .app-container {
      padding: 5rem 1rem 1.5rem;
+  }
+
+  .stations-container {
+    grid-template-columns: 1fr;
+    gap: 2rem;
   }
 
   .app-header {

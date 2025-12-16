@@ -1,4 +1,5 @@
 import { fetchSepaMeasurements, fetchSepaHistoricalMeasurements } from './sepa';
+import { fetchWaqiMeasurements } from './waqi';
 
 export const fetchAirQuality = async (city) => {
   try {
@@ -10,6 +11,15 @@ export const fetchAirQuality = async (city) => {
         throw new Error('Stanica za merenje kvaliteta vazduha trenutno nije u funkciji.');
       }
       return normalizeSepaData(measurements);
+    } else if (city.waqiStationId) {
+      console.log('Dohvatanje podataka iz WAQI za stanicu:', city.waqiStationId);
+      const token = import.meta.env.VITE_WAQI_TOKEN;
+      if (!token) {
+        throw new Error('WAQI API token nije konfigurisan');
+      }
+      const data = await fetchWaqiMeasurements(city.waqiStationId, token);
+      console.log('WAQI podaci:', data);
+      return data;
     } else if (city.lat && city.lng) {
       console.log('Dohvatanje podataka iz Open-Meteo za:', city.lat, city.lng);
       const response = await fetch(
