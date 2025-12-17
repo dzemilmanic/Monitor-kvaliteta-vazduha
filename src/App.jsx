@@ -4,6 +4,7 @@ import Navbar from './components/Navbar.jsx';
 import Loader from './components/Loader.jsx';
 import StationDisplay from './components/StationDisplay.jsx';
 import { fetchAirQuality, fetchHistoricalAirQuality } from './api/airQuality';
+import ReferenceTablesSection from './components/ReferenceTablesSection.jsx';
 
 const CITIES = {
   NOVI_PAZAR: {
@@ -139,6 +140,7 @@ function App() {
                 key={stationKey}
                 stationName={station.name}
                 source={station.source}
+                cityName={selectedCity}
                 airQualityData={stationsData[stationKey]}
                 historicalData={historicalData[stationKey] || null}
                 loading={stationsLoading[stationKey]}
@@ -149,6 +151,8 @@ function App() {
             );
           })}
         </div>
+
+        <ReferenceTablesSection hasAqi={selectedCity === 'TUTIN'} />
 
         <footer className="app-footer">
           <p>Podaci se ažuriraju svaki sat | Izvori: SEPA, WAQI i sensor.community</p>

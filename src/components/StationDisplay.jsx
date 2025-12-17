@@ -2,14 +2,14 @@ import AirQualityDisplay from './AirQualityDisplay.jsx';
 import HistoricalDataDisplay from './HistoricalDataDisplay.jsx';
 import './StationDisplay.css';
 
-const StationDisplay = ({ stationName, source, airQualityData, historicalData, loading, error, historicalLoading, historicalError }) => {
+const StationDisplay = ({ stationName, source, airQualityData, historicalData, loading, error, historicalLoading, historicalError, cityName }) => {
   return (
     <div className="station-display">
       <div className="station-header">
         <h2 className="station-name">{stationName}</h2>
         <div className="station-source-badge">{source}</div>
       </div>
-      <AirQualityDisplay data={airQualityData} loading={loading} error={error} />
+      <AirQualityDisplay data={airQualityData} loading={loading} error={error} cityName={cityName} />
       {historicalData && (
         <HistoricalDataDisplay 
           historicalData={historicalData} 

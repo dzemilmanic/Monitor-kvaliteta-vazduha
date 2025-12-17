@@ -269,12 +269,12 @@ a:hover {
 
 @media (max-width: 768px) {
   .app-container {
-     padding: 5rem 1rem 1.5rem;
+    padding: 5rem 1rem 1.5rem;
   }
 
   .stations-container {
     grid-template-columns: 1fr;
-    gap: 2rem;
+    gap: 1.5rem;
   }
 
   .app-header {
@@ -282,7 +282,7 @@ a:hover {
   }
 
   .header-content {
-    padding: 2rem 1rem;
+    padding: 2rem 1.5rem;
   }
 
   .header-badge {
@@ -290,8 +290,22 @@ a:hover {
     padding: 0.4rem 1rem;
   }
 
+  .app-header h1 {
+    font-size: clamp(1.8rem, 5vw, 2.5rem);
+  }
+
+  .app-subtitle {
+    font-size: clamp(0.9rem, 2vw, 1.1rem);
+  }
+
+  .city-dropdown {
+    padding: 0.65rem 2.2rem 0.65rem 1rem;
+    font-size: 1rem;
+  }
+
   .app-footer {
-    margin-top: 3rem;
+    margin-top: 2rem;
+    padding: 1.5rem 1rem;
     font-size: 0.85rem;
   }
 }
@@ -301,7 +315,39 @@ a:hover {
     padding: 4.5rem 0.75rem 1rem;
   }
 
+  .stations-container {
+    gap: 1.25rem;
+  }
+
   .header-content {
     padding: 1.5rem 1rem;
+    border-radius: 16px;
+  }
+
+  .app-header h1 {
+    font-size: clamp(1.5rem, 6vw, 2rem);
+    margin-bottom: 0.75rem;
+  }
+
+  .app-subtitle {
+    font-size: clamp(0.85rem, 2.5vw, 1rem);
+  }
+
+  .header-badge {
+    font-size: 0.7rem;
+    padding: 0.35rem 0.9rem;
+    margin-bottom: 1rem;
+  }
+
+  .city-dropdown {
+    padding: 0.6rem 2rem 0.6rem 0.9rem;
+    font-size: 0.95rem;
+  }
+
+  .app-footer {
+    margin-top: 1.5rem;
+    padding: 1.25rem 0.75rem;
+    font-size: 0.8rem;
+    border-radius: 12px;
   }
 }
