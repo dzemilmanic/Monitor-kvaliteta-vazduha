@@ -51,6 +51,121 @@
   letter-spacing: 2px;
 }
 
+.aqi-status {
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(255, 255, 255, 0.85) 100%);
+  padding: 3rem;
+  border-radius: 24px;
+  text-align: center;
+  border: 4px solid;
+  box-shadow: 0 12px 40px rgba(56, 142, 60, 0.2);
+  transition: all 0.3s ease;
+  animation: scaleIn 0.5s ease-out;
+  min-width: 280px;
+}
+
+.aqi-status:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 16px 50px rgba(56, 142, 60, 0.3);
+}
+
+.aqi-status h2 {
+  font-size: 2rem;
+  margin: 1rem 0 0.5rem 0;
+  font-weight: 700;
+  letter-spacing: 1px;
+}
+
+.aqi-value {
+  font-size: 3rem;
+  font-weight: 900;
+  margin: 1rem 0;
+  line-height: 1;
+}
+
+.aqi-label {
+  font-size: 1.8rem;
+  font-weight: 800;
+  margin-top: 0.5rem;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+}
+
+.aqi-description {
+  font-size: 1rem;
+  color: #558b2f;
+  margin-top: 1rem;
+  line-height: 1.6;
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.aqi-index-info {
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(255, 255, 255, 0.85) 100%);
+  padding: 2rem;
+  border-radius: 16px;
+  box-shadow: 0 6px 20px rgba(56, 142, 60, 0.15);
+  margin-top: 2rem;
+  backdrop-filter: blur(10px);
+  width: 100%;
+  max-width: 1200px;
+}
+
+.aqi-index-info h4 {
+  color: #2e7d32;
+  font-size: 1.5rem;
+  margin-bottom: 1.5rem;
+  font-weight: 700;
+  text-align: center;
+  letter-spacing: 0.5px;
+}
+
+.aqi-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.aqi-table th {
+  background: rgba(139, 195, 74, 0.25);
+  color: #2e7d32;
+  padding: 1rem;
+  text-align: left;
+  font-weight: 700;
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  border-bottom: 2px solid #558b2f;
+}
+
+.aqi-table td {
+  padding: 0.9rem 1rem;
+  color: #33691e;
+  border-bottom: 1px solid rgba(139, 195, 74, 0.2);
+  font-weight: 500;
+}
+
+.aqi-table tbody tr {
+  transition: all 0.2s ease;
+}
+
+.aqi-table tbody tr:hover {
+  background: rgba(139, 195, 74, 0.1);
+  transform: scale(1.01);
+}
+
+.unhealthy-sensitive-row {
+  border-left: 4px solid #f97316;
+}
+
+.unhealthy-row {
+  border-left: 4px solid #ef4444;
+}
+
+.very-unhealthy-row {
+  border-left: 4px solid #991b1b;
+}
+
+
 .pollutants-section {
   width: 100%;
   max-width: 1200px;

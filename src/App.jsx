@@ -5,31 +5,47 @@ import Loader from './components/Loader.jsx';
 import StationDisplay from './components/StationDisplay.jsx';
 import { fetchAirQuality, fetchHistoricalAirQuality } from './api/airQuality';
 
-const SEPA_STATION = { 
-  name: 'SEPA Stanica', 
-  source: 'SEPA',
-  sepaStationId: 71 
-};
-
-const WAQI_STATION = { 
-  name: 'Citizen Science', 
-  source: 'sensor.community',
-  waqiStationId: 12894 
+const CITIES = {
+  NOVI_PAZAR: {
+    name: 'Novi Pazar',
+    stations: [
+      { 
+        name: 'SEPA Stanica', 
+        source: 'SEPA',
+        sepaStationId: 71 
+      },
+      { 
+        name: 'Citizen Science', 
+        source: 'sensor.community',
+        waqiStationId: 12894 
+      }
+    ]
+  },
+  TUTIN: {
+    name: 'Tutin',
+    stations: [
+      { 
+        name: 'Revolucije', 
+        source: 'WAQI',
+        waqiStationId: 'A248989'
+      },
+      { 
+        name: 'Pod Gradac', 
+        source: 'WAQI',
+        waqiStationId: 'A516535'
+      }
+    ]
+  }
 };
 
 function App() {
-  // SEPA station state
-  const [sepaData, setSepaData] = useState(null);
-  const [sepaHistoricalData, setSepaHistoricalData] = useState(null);
-  const [sepaLoading, setSepaLoading] = useState(false);
-  const [sepaHistoricalLoading, setSepaHistoricalLoading] = useState(false);
-  const [sepaError, setSepaError] = useState(null);
-  const [sepaHistoricalError, setSepaHistoricalError] = useState(null);
-
-  // WAQI station state
-  const [waqiData, setWaqiData] = useState(null);
-  const [waqiLoading, setWaqiLoading] = useState(false);
-  const [waqiError, setWaqiError] = useState(null);
+  const [selectedCity, setSelectedCity] = useState('NOVI_PAZAR');
+  const [stationsData, setStationsData] = useState({});
+  const [stationsLoading, setStationsLoading] = useState({});
+  const [stationsError, setStationsError] = useState({});
+  const [historicalData, setHistoricalData] = useState({});
+  const [historicalLoading, setHistoricalLoading] = useState({});
+  const [historicalError, setHistoricalError] = useState({});
 
   const [showLoader, setShowLoader] = useState(true);
 
@@ -43,54 +59,53 @@ function App() {
 
   useEffect(() => {
     if (!showLoader) {
-      // Fetch SEPA station data
-      setSepaLoading(true);
-      setSepaError(null);
-      fetchAirQuality(SEPA_STATION)
-        .then((data) => {
-          setSepaData(data);
-          setSepaLoading(false);
-        })
-        .catch((err) => {
-          setSepaError(err);
-          setSepaLoading(false);
-        });
+      const currentCityStations = CITIES[selectedCity].stations;
       
-      // Fetch SEPA historical data
-      setSepaHistoricalLoading(true);
-      setSepaHistoricalError(null);
-      fetchHistoricalAirQuality(SEPA_STATION)
-        .then((data) => {
-          setSepaHistoricalData(data);
-          setSepaHistoricalLoading(false);
-        })
-        .catch((err) => {
-          setSepaHistoricalError(err);
-          setSepaHistoricalLoading(false);
-        });
-
-      // Fetch WAQI station data
-      setWaqiLoading(true);
-      setWaqiError(null);
-      fetchAirQuality(WAQI_STATION)
-        .then((data) => {
-          setWaqiData(data);
-          setWaqiLoading(false);
-        })
-        .catch((err) => {
-          setWaqiError(err);
-          setWaqiLoading(false);
-        });
+      currentCityStations.forEach((station, index) => {
+        const stationKey = `${selectedCity}_${index}`;
+        
+        // Fetch station data
+        setStationsLoading(prev => ({ ...prev, [stationKey]: true }));
+        setStationsError(prev => ({ ...prev, [stationKey]: null }));
+        
+        fetchAirQuality(station)
+          .then((data) => {
+            setStationsData(prev => ({ ...prev, [stationKey]: data }));
+            setStationsLoading(prev => ({ ...prev, [stationKey]: false }));
+          })
+          .catch((err) => {
+            setStationsError(prev => ({ ...prev, [stationKey]: err }));
+            setStationsLoading(prev => ({ ...prev, [stationKey]: false }));
+          });
+        
+        // Fetch historical data (only for SEPA stations)
+        if (station.sepaStationId) {
+          setHistoricalLoading(prev => ({ ...prev, [stationKey]: true }));
+          setHistoricalError(prev => ({ ...prev, [stationKey]: null }));
+          
+          fetchHistoricalAirQuality(station)
+            .then((data) => {
+              setHistoricalData(prev => ({ ...prev, [stationKey]: data }));
+              setHistoricalLoading(prev => ({ ...prev, [stationKey]: false }));
+            })
+            .catch((err) => {
+              setHistoricalError(prev => ({ ...prev, [stationKey]: err }));
+              setHistoricalLoading(prev => ({ ...prev, [stationKey]: false }));
+            });
+        }
+      });
     }
-  }, [showLoader]);
+  }, [showLoader, selectedCity]);
 
   useEffect(() => {
-    document.title = 'Monitor kvaliteta vazduha - Novi Pazar';
-  }, []);
+    document.title = `Monitor kvaliteta vazduha - ${CITIES[selectedCity].name}`;
+  }, [selectedCity]);
 
   if (showLoader) {
     return <Loader />;
   }
+
+  const currentCity = CITIES[selectedCity];
 
   return (
     <>
@@ -100,37 +115,43 @@ function App() {
           <div className="header-content">
             <div className="header-badge">Uživo</div>
             <h1>Monitor kvaliteta vazduha</h1>
-            <p className="app-subtitle">Novi Pazar - Uporedna analiza stanica</p>
+            <div className="city-selector">
+              <select 
+                value={selectedCity} 
+                onChange={(e) => setSelectedCity(e.target.value)}
+                className="city-dropdown"
+              >
+                {Object.entries(CITIES).map(([key, city]) => (
+                  <option key={key} value={key}>{city.name}</option>
+                ))}
+              </select>
+            </div>
+            <p className="app-subtitle">{currentCity.name} - Uporedna analiza stanica</p>
             <div className="header-pulse"></div>
           </div>
         </header>
 
         <div className="stations-container">
-          <StationDisplay 
-            stationName={SEPA_STATION.name}
-            source={SEPA_STATION.source}
-            airQualityData={sepaData}
-            historicalData={sepaHistoricalData}
-            loading={sepaLoading}
-            error={sepaError}
-            historicalLoading={sepaHistoricalLoading}
-            historicalError={sepaHistoricalError}
-          />
-          
-          <StationDisplay 
-            stationName={WAQI_STATION.name}
-            source={WAQI_STATION.source}
-            airQualityData={waqiData}
-            historicalData={null}
-            loading={waqiLoading}
-            error={waqiError}
-            historicalLoading={false}
-            historicalError={null}
-          />
+          {currentCity.stations.map((station, index) => {
+            const stationKey = `${selectedCity}_${index}`;
+            return (
+              <StationDisplay 
+                key={stationKey}
+                stationName={station.name}
+                source={station.source}
+                airQualityData={stationsData[stationKey]}
+                historicalData={historicalData[stationKey] || null}
+                loading={stationsLoading[stationKey]}
+                error={stationsError[stationKey]}
+                historicalLoading={historicalLoading[stationKey] || false}
+                historicalError={historicalError[stationKey] || null}
+              />
+            );
+          })}
         </div>
 
         <footer className="app-footer">
-          <p>Podaci se ažuriraju svaki sat | Izvori: SEPA i sensor.community</p>
+          <p>Podaci se ažuriraju svaki sat | Izvori: SEPA, WAQI i sensor.community</p>
           <p>Izradio: <a href="https://instagram.com/dzemilmanic" target='blank'>Džemil Manić</a></p>
           <p><a href="https://www.buymeacoffee.com/dzemil" target='blank'>Viči kahvu</a></p>
         </footer>

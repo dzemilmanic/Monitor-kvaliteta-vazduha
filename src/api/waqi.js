@@ -1,6 +1,8 @@
 export const fetchWaqiMeasurements = async (stationId, token) => {
   try {
-    const response = await fetch(`https://api.waqi.info/feed/@${stationId}/?token=${token}`);
+    // Podrška za alphanumeričke ID-ove (npr. A248989) i numeričke (npr. 12894)
+    const idPrefix = typeof stationId === 'string' && stationId.startsWith('A') ? '' : '@';
+    const response = await fetch(`https://api.waqi.info/feed/${idPrefix}${stationId}/?token=${token}`);
     if (!response.ok) {
       throw new Error('Neuspješno dohvatanje WAQI podataka');
     }

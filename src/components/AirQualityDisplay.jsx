@@ -103,6 +103,27 @@ const AirQualityDisplay = ({ data, loading, error }) => {
     return { level: 'unknown', color: '#666', label: 'N/A' };
   };
 
+  const getAqiQualityLevel = (aqiValue) => {
+    if (aqiValue === null || aqiValue === undefined) return { level: 'unknown', color: '#666', label: 'N/A', description: '' };
+
+    const aqiLevels = [
+      { max: 50, level: 'good', color: '#22c55e', label: 'Dobro', description: 'Kvalitet vazduha se smatra zadovoljavajućim, a zagađenje vazduha predstavlja mali ili nikakav rizik' },
+      { max: 100, level: 'moderate', color: '#eab308', label: 'Umereno', description: 'Kvalitet zraka je prihvatljiv; Međutim, neki zagađivači mogu imati umjereno zabrinjavajući utjecaj na zdravstveno stanje malog broja ljudi koji su veoma osjetljivi na zagađenje zraka.' },
+      { max: 150, level: 'unhealthy-sensitive', color: '#f97316', label: 'Nezdravo za osetljive grupe', description: 'Može prouzrokovati zdravstvene poteškoće kod članova osjetljivih grupa. Većina verovatno neće biti pogođena.' },
+      { max: 200, level: 'unhealthy', color: '#ef4444', label: 'Nezdravo', description: 'Svako može početi osjećati posljedice na zdravlje; članovi osjetljivih grupa mogu imati ozbiljnije zdravstvene posljedice' },
+      { max: 300, level: 'very-unhealthy', color: '#991b1b', label: 'Veoma nezdravo', description: 'Upozorenja o hitnim slučajevima. Čitava populacija će biti pogođena.' },
+      { max: Infinity, level: 'hazardous', color: '#7c2d12', label: 'Opasno', description: 'Zdravstveno upozorenje: svako može osjetiti ozbiljnije posljedice na zdravlje' }
+    ];
+
+    for (const level of aqiLevels) {
+      if (aqiValue <= level.max) {
+        return { level: level.level, color: level.color, label: level.label, description: level.description };
+      }
+    }
+
+    return { level: 'unknown', color: '#666', label: 'N/A', description: '' };
+  };
+
   const getOverallQuality = () => {
     const pollutants = [
       { name: 'pm10', value: data.pm10 },
@@ -196,11 +217,28 @@ const AirQualityDisplay = ({ data, loading, error }) => {
     }
   ];
 
+  const hasAqi = data.aqi !== null && data.aqi !== undefined;
+  const aqiQuality = hasAqi ? getAqiQualityLevel(data.aqi) : null;
+
   return (
     <div className="air-quality-display">
       <div className="data-source">
         Izvor: <strong>{data.source}</strong>
       </div>
+
+      {hasAqi && (
+        <div id="aqi" className={`aqi-status ${aqiQuality.level}`} style={{ borderColor: aqiQuality.color }}>
+          <Activity size={64} style={{ color: aqiQuality.color }} />
+          <h2 style={{ color: aqiQuality.color }}>AQI Indeks</h2>
+          <div className="aqi-value" style={{ color: aqiQuality.color }}>
+            {data.aqi}
+          </div>
+          <div className="aqi-label" style={{ color: aqiQuality.color }}>
+            {aqiQuality.label}
+          </div>
+          <p className="aqi-description">{aqiQuality.description}</p>
+        </div>
+      )}
 
       <div id="overall" className={`overall-status ${overall.level}`} style={{ borderColor: overall.color }}>
         <Activity size={64} style={{ color: overall.color }} />
@@ -373,6 +411,53 @@ const AirQualityDisplay = ({ data, loading, error }) => {
             </table>
           </div>
         </div>
+
+        {hasAqi && (
+          <div id="aqi-table" className="aqi-index-info">
+            <h4>AQI Indeks Vrednosti</h4>
+            <table className="aqi-table">
+              <thead>
+                <tr>
+                  <th>AQI Raspon</th>
+                  <th>Nivo</th>
+                  <th>Opis</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr className="good-row">
+                  <td>0 - 50</td>
+                  <td>Dobro</td>
+                  <td>Kvalitet vazduha se smatra zadovoljavajućim, a zagađenje vazduha predstavlja mali ili nikakav rizik</td>
+                </tr>
+                <tr className="moderate-row">
+                  <td>51 - 100</td>
+                  <td>Umereno</td>
+                  <td>Kvalitet zraka je prihvatljiv; Međutim, neki zagađivači mogu imati umjereno zabrinjavajući utjecaj na zdravstveno stanje malog broja ljudi koji su veoma osjetljivi na zagađenje zraka.</td>
+                </tr>
+                <tr className="unhealthy-sensitive-row">
+                  <td>101 - 150</td>
+                  <td>Nezdravo za osetljive grupe</td>
+                  <td>Može prouzrokovati zdravstvene poteškoće kod članova osjetljivih grupa. Većina verovatno neće biti pogođena.</td>
+                </tr>
+                <tr className="unhealthy-row">
+                  <td>151 - 200</td>
+                  <td>Nezdravo</td>
+                  <td>Svako može početi osjećati posljedice na zdravlje; članovi osjetljivih grupa mogu imati ozbiljnije zdravstvene posljedice</td>
+                </tr>
+                <tr className="very-unhealthy-row">
+                  <td>201 - 300</td>
+                  <td>Veoma nezdravo</td>
+                  <td>Upozorenja o hitnim slučajevima. Čitava populacija će biti pogođena.</td>
+                </tr>
+                <tr className="hazardous-row">
+                  <td>300+</td>
+                  <td>Opasno</td>
+                  <td>Zdravstveno upozorenje: svako može osjetiti ozbiljnije posljedice na zdravlje</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        )}
 
         <div id="health" className="health-info">
           <h4>Zdravstvene preporuke</h4>
