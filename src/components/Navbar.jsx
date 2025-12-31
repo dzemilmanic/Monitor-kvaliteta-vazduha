@@ -59,7 +59,7 @@ const Navbar = () => {
       <div className="navbar-container">
         <div className="navbar-logo" onClick={() => scrollToSection('header')}>
           <Wind size={28} />
-          <span>Vazduh NP</span>
+          <span>Vazduh</span>
         </div>
 
         <button
