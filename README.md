@@ -40,12 +40,11 @@ Ovaj projekat koristi najsavremenije tehnologije za brz i pouzdan rad:
 
 1.  **Klonirajte repozitorijum:**
     ```bash
-    git clone https://github.com/vas-username/Vazduh-np.git
+    git clone https://github.com/dzemilmanic/Monitor-kvaliteta-vazduha.git
     ```
 
 2.  **Instalirajte zavisnosti:**
     ```bash
-    cd Vazduh-np
     npm install
     # ili
     yarn
