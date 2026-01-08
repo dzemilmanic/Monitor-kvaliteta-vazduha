@@ -240,13 +240,13 @@ const AirQualityDisplay = ({ data, loading, error, cityName }) => {
         </div>
       )}
 
-      <div id="overall" className={`overall-status ${overall.level}`} style={{ borderColor: overall.color }}>
+      {/* <div id="overall" className={`overall-status ${overall.level}`} style={{ borderColor: overall.color }}>
         <Activity size={64} style={{ color: overall.color }} />
         <h2 style={{ color: overall.color }}>Kvalitet Vazduha</h2>
         <div className="overall-label" style={{ color: overall.color }}>
           {overall.label}
         </div>
-      </div>
+      </div> */}
 
       <div id="particles" className="pollutants-section">
         <h3 className="section-title">Suspendovane čestice</h3>
