@@ -156,7 +156,7 @@ function App() {
 
         <footer className="app-footer">
           <p>Podaci se ažuriraju svaki sat | Izvori: SEPA, WAQI i sensor.community</p>
-          <p>Izradio: <a href="https://instagram.com/dzemilmanic" target='blank'>Džemil Manić</a></p>
+          <p>Izradio: <a href="https://dzemilmanic.netlify.app" target='blank'>Džemil Manić</a></p>
           <p><a href="https://www.buymeacoffee.com/dzemil" target='blank'>Viči kahvu</a></p>
         </footer>
       </div>
