@@ -1,7 +1,7 @@
-import { AlertCircle, Wind, Droplets, Cloud, Factory, Flame, Activity, CloudOff } from 'lucide-react';
+import { AlertCircle, Droplets, Cloud, Activity, CloudOff } from 'lucide-react';
 import './AirQualityDisplay.css';
 
-const AirQualityDisplay = ({ data, loading, error, cityName }) => {
+const AirQualityDisplay = ({ data, loading, error, source }) => {
   if (loading) {
     return (
       <div className="loading">
@@ -37,10 +37,34 @@ const AirQualityDisplay = ({ data, loading, error, cityName }) => {
     );
   }
 
+  const isWaqi = source === 'WAQI' || source === 'sensor.community';
+
+  // Granične vrijednosti: EU/SEPA standard za SEPA, US EPA AQI sub-indeksi za WAQI
   const getQualityLevel = (pollutant, value) => {
     if (value === null) return { level: 'unknown', color: '#666', label: 'N/A' };
 
-    const limits = {
+    // US EPA AQI sub-indeks granične vrijednosti (za WAQI – vrijednosti su već AQI, ne µg/m³)
+    const waqiLimits = {
+      pm10: [
+        { max: 54, level: 'excellent', color: '#22c55e', label: 'Dobro' },
+        { max: 154, level: 'good', color: '#84cc16', label: 'Umjereno' },
+        { max: 254, level: 'moderate', color: '#eab308', label: 'Nezdravo za osjetljive' },
+        { max: 354, level: 'poor', color: '#f97316', label: 'Nezdravo' },
+        { max: 424, level: 'verypoor', color: '#ef4444', label: 'Veoma nezdravo' },
+        { max: Infinity, level: 'hazardous', color: '#991b1b', label: 'Opasno' }
+      ],
+      pm2_5: [
+        { max: 12, level: 'excellent', color: '#22c55e', label: 'Dobro' },
+        { max: 35.4, level: 'good', color: '#84cc16', label: 'Umjereno' },
+        { max: 55.4, level: 'moderate', color: '#eab308', label: 'Nezdravo za osjetljive' },
+        { max: 150.4, level: 'poor', color: '#f97316', label: 'Nezdravo' },
+        { max: 250.4, level: 'verypoor', color: '#ef4444', label: 'Veoma nezdravo' },
+        { max: Infinity, level: 'hazardous', color: '#991b1b', label: 'Opasno' }
+      ]
+    };
+
+    // EU/SEPA granične vrijednosti
+    const sepaLimits = {
       pm10: [
         { max: 20, level: 'excellent', color: '#22c55e', label: 'Odličan' },
         { max: 40, level: 'good', color: '#84cc16', label: 'Dobar' },
@@ -56,41 +80,10 @@ const AirQualityDisplay = ({ data, loading, error, cityName }) => {
         { max: 50, level: 'poor', color: '#f97316', label: 'Loš' },
         { max: 75, level: 'verypoor', color: '#ef4444', label: 'Vrlo loš' },
         { max: Infinity, level: 'hazardous', color: '#991b1b', label: 'Opasan' }
-      ],
-      no2: [
-        { max: 40, level: 'excellent', color: '#22c55e', label: 'Odličan' },
-        { max: 90, level: 'good', color: '#84cc16', label: 'Dobar' },
-        { max: 120, level: 'moderate', color: '#eab308', label: 'Umjeren' },
-        { max: 230, level: 'poor', color: '#f97316', label: 'Loš' },
-        { max: 340, level: 'verypoor', color: '#ef4444', label: 'Vrlo loš' },
-        { max: Infinity, level: 'hazardous', color: '#991b1b', label: 'Opasan' }
-      ],
-      so2: [
-        { max: 100, level: 'excellent', color: '#22c55e', label: 'Odličan' },
-        { max: 200, level: 'good', color: '#84cc16', label: 'Dobar' },
-        { max: 350, level: 'moderate', color: '#eab308', label: 'Umjeren' },
-        { max: 500, level: 'poor', color: '#f97316', label: 'Loš' },
-        { max: 750, level: 'verypoor', color: '#ef4444', label: 'Vrlo loš' },
-        { max: Infinity, level: 'hazardous', color: '#991b1b', label: 'Opasan' }
-      ],
-      co: [
-        { max: 4, level: 'excellent', color: '#22c55e', label: 'Odličan' },
-        { max: 7, level: 'good', color: '#84cc16', label: 'Dobar' },
-        { max: 10, level: 'moderate', color: '#eab308', label: 'Umjeren' },
-        { max: 20, level: 'poor', color: '#f97316', label: 'Loš' },
-        { max: 30, level: 'verypoor', color: '#ef4444', label: 'Vrlo loš' },
-        { max: Infinity, level: 'hazardous', color: '#991b1b', label: 'Opasan' }
-      ],
-      ozone: [
-        { max: 60, level: 'excellent', color: '#22c55e', label: 'Odličan' },
-        { max: 100, level: 'good', color: '#84cc16', label: 'Dobar' },
-        { max: 140, level: 'moderate', color: '#eab308', label: 'Umjeren' },
-        { max: 180, level: 'poor', color: '#f97316', label: 'Loš' },
-        { max: 240, level: 'verypoor', color: '#ef4444', label: 'Vrlo loš' },
-        { max: Infinity, level: 'hazardous', color: '#991b1b', label: 'Opasan' }
       ]
     };
 
+    const limits = isWaqi ? waqiLimits : sepaLimits;
     const pollutantLimits = limits[pollutant];
     if (!pollutantLimits) return { level: 'unknown', color: '#666', label: 'N/A' };
 
@@ -124,44 +117,6 @@ const AirQualityDisplay = ({ data, loading, error, cityName }) => {
     return { level: 'unknown', color: '#666', label: 'N/A', description: '' };
   };
 
-  const getOverallQuality = () => {
-    const pollutants = [
-      { name: 'pm10', value: data.pm10 },
-      { name: 'pm2_5', value: data.pm2_5 },
-      { name: 'no2', value: data.no2 },
-      { name: 'so2', value: data.so2 },
-      { name: 'co', value: data.co },
-      { name: 'ozone', value: data.ozone }
-    ];
-
-    let worstLevel = 'excellent';
-    let worstColor = '#22c55e';
-    let worstLabel = 'Odličan';
-
-    const levelPriority = {
-      'excellent': 1,
-      'good': 2,
-      'moderate': 3,
-      'poor': 4,
-      'verypoor': 5,
-      'hazardous': 6
-    };
-
-    pollutants.forEach(p => {
-      if (p.value !== null) {
-        const quality = getQualityLevel(p.name, p.value);
-        if (levelPriority[quality.level] > levelPriority[worstLevel]) {
-          worstLevel = quality.level;
-          worstColor = quality.color;
-          worstLabel = quality.label;
-        }
-      }
-    });
-
-    return { level: worstLevel, color: worstColor, label: worstLabel };
-  };
-
-  const overall = getOverallQuality();
 
   const particlesData = [
     {
@@ -182,40 +137,6 @@ const AirQualityDisplay = ({ data, loading, error, cityName }) => {
     }
   ];
 
-  const gasesData = [
-    {
-      name: 'NO₂',
-      key: 'no2',
-      value: data.no2,
-      unit: data.units?.no2 || 'µg/m³',
-      icon: Factory,
-      description: 'Azot-dioksid'
-    },
-    {
-      name: 'SO₂',
-      key: 'so2',
-      value: data.so2,
-      unit: data.units?.so2 || 'µg/m³',
-      icon: Cloud,
-      description: 'Sumpor-dioksid'
-    },
-    {
-      name: 'CO',
-      key: 'co',
-      value: data.co,
-      unit: data.units?.co || 'mg/m³',
-      icon: Flame,
-      description: 'Ugljik-monoksid'
-    },
-    {
-      name: 'O₃',
-      key: 'ozone',
-      value: data.ozone,
-      unit: data.units?.ozone || 'µg/m³',
-      icon: Wind,
-      description: 'Ozon'
-    }
-  ];
 
   const hasAqi = data.aqi !== null && data.aqi !== undefined;
   const aqiQuality = hasAqi ? getAqiQualityLevel(data.aqi) : null;
@@ -240,16 +161,11 @@ const AirQualityDisplay = ({ data, loading, error, cityName }) => {
         </div>
       )}
 
-      {/* <div id="overall" className={`overall-status ${overall.level}`} style={{ borderColor: overall.color }}>
-        <Activity size={64} style={{ color: overall.color }} />
-        <h2 style={{ color: overall.color }}>Kvalitet Vazduha</h2>
-        <div className="overall-label" style={{ color: overall.color }}>
-          {overall.label}
-        </div>
-      </div> */}
-
       <div id="particles" className="pollutants-section">
         <h3 className="section-title">Suspendovane čestice</h3>
+        <p className="section-standard">
+          {isWaqi ? 'Standard: US EPA AQI' : 'Standard: EU / SEPA'}
+        </p>
         <div className="pollutants-grid particles">
           {particlesData.map((pollutant) => {
             const quality = getQualityLevel(pollutant.key, pollutant.value);
@@ -278,39 +194,6 @@ const AirQualityDisplay = ({ data, loading, error, cityName }) => {
           })}
         </div>
       </div>
-
-      {cityName !== 'TUTIN' && (
-        <div id="gases" className="pollutants-section">
-          <h3 className="section-title">Gasovi</h3>
-          <div className="pollutants-grid gases">
-            {gasesData.map((pollutant) => {
-              const quality = getQualityLevel(pollutant.key, pollutant.value);
-              const Icon = pollutant.icon;
-
-              return (
-                <div
-                  key={pollutant.name}
-                  className={`pollutant-card ${quality.level}`}
-                  style={{ borderLeftColor: quality.color }}
-                >
-                  <div className="pollutant-header">
-                    <Icon size={24} style={{ color: quality.color }} />
-                    <h4>{pollutant.name}</h4>
-                  </div>
-                  <div className="pollutant-description">{pollutant.description}</div>
-                  <div className="pollutant-value" style={{ color: quality.color }}>
-                    {pollutant.value !== null ? pollutant.value.toFixed(1) : '-'}
-                  </div>
-                  <div className="pollutant-unit">{pollutant.unit}</div>
-                  <div className="pollutant-status" style={{ backgroundColor: quality.color }}>
-                    {quality.label}
-                  </div>
-                </div>
-              );
-            })}
-          </div>
-        </div>
-      )}
 
       {/* Reference tables moved to shared ReferenceTablesSection component */}
     </div>

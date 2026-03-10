@@ -3,7 +3,7 @@ import './App.css';
 import Navbar from './components/Navbar.jsx';
 import Loader from './components/Loader.jsx';
 import StationDisplay from './components/StationDisplay.jsx';
-import { fetchAirQuality, fetchHistoricalAirQuality } from './api/airQuality';
+import { fetchAirQuality } from './api/airQuality';
 import ReferenceTablesSection from './components/ReferenceTablesSection.jsx';
 
 const CITIES = {
@@ -44,9 +44,6 @@ function App() {
   const [stationsData, setStationsData] = useState({});
   const [stationsLoading, setStationsLoading] = useState({});
   const [stationsError, setStationsError] = useState({});
-  const [historicalData, setHistoricalData] = useState({});
-  const [historicalLoading, setHistoricalLoading] = useState({});
-  const [historicalError, setHistoricalError] = useState({});
 
   const [showLoader, setShowLoader] = useState(true);
 
@@ -78,22 +75,6 @@ function App() {
             setStationsError(prev => ({ ...prev, [stationKey]: err }));
             setStationsLoading(prev => ({ ...prev, [stationKey]: false }));
           });
-        
-        // Fetch historical data (only for SEPA stations)
-        if (station.sepaStationId) {
-          setHistoricalLoading(prev => ({ ...prev, [stationKey]: true }));
-          setHistoricalError(prev => ({ ...prev, [stationKey]: null }));
-          
-          fetchHistoricalAirQuality(station)
-            .then((data) => {
-              setHistoricalData(prev => ({ ...prev, [stationKey]: data }));
-              setHistoricalLoading(prev => ({ ...prev, [stationKey]: false }));
-            })
-            .catch((err) => {
-              setHistoricalError(prev => ({ ...prev, [stationKey]: err }));
-              setHistoricalLoading(prev => ({ ...prev, [stationKey]: false }));
-            });
-        }
       });
     }
   }, [showLoader, selectedCity]);
@@ -142,11 +123,8 @@ function App() {
                 source={station.source}
                 cityName={selectedCity}
                 airQualityData={stationsData[stationKey]}
-                historicalData={historicalData[stationKey] || null}
                 loading={stationsLoading[stationKey]}
                 error={stationsError[stationKey]}
-                historicalLoading={historicalLoading[stationKey] || false}
-                historicalError={historicalError[stationKey] || null}
               />
             );
           })}
