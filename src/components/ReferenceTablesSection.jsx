@@ -51,57 +51,6 @@ const ReferenceTablesSection = ({ hasAqi = false }) => {
           </table>
         </div>
 
-        <div className="info-table">
-          <h4>Gasovi</h4>
-          <table>
-            <thead>
-              <tr>
-                <th>Nivo</th>
-                <th>NO₂ (µg/m³)</th>
-                <th>SO₂ (µg/m³)</th>
-                <th>O₃ (µg/m³)</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr className="excellent-row">
-                <td>Odličan</td>
-                <td>&lt; 40</td>
-                <td>&lt; 100</td>
-                <td>&lt; 60</td>
-              </tr>
-              <tr className="good-row">
-                <td>Dobar</td>
-                <td>40-90</td>
-                <td>100-200</td>
-                <td>60-100</td>
-              </tr>
-              <tr className="moderate-row">
-                <td>Umjeren</td>
-                <td>90-120</td>
-                <td>200-350</td>
-                <td>100-140</td>
-              </tr>
-              <tr className="poor-row">
-                <td>Loš</td>
-                <td>120-230</td>
-                <td>350-500</td>
-                <td>140-180</td>
-              </tr>
-              <tr className="verypoor-row">
-                <td>Vrlo loš</td>
-                <td>230-340</td>
-                <td>500-750</td>
-                <td>180-240</td>
-              </tr>
-              <tr className="hazardous-row">
-                <td>Opasan</td>
-                <td>&gt; 340</td>
-                <td>&gt; 750</td>
-                <td>&gt; 240</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
       </div>
 
       {hasAqi && (
