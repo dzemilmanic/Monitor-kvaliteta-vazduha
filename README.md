@@ -1,10 +1,5 @@
 # 🌍 Monitor Kvaliteta Vazduha | Novi Pazar & Tutin
 
-![Air Quality](https://img.shields.io/badge/Air%20Quality-Monitoring-blue?style=for-the-badge&logo=atmosphere)
-![React](https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB)
-![Vite](https://img.shields.io/badge/Vite-646CFF?style=for-the-badge&logo=vite&logoColor=white)
-![Status](https://img.shields.io/badge/Status-Active-success?style=for-the-badge)
-
 ## 📖 O Projektu
 
 Dobrodošli na **Monitor Kvaliteta Vazduha**, modernu platformu posvećenu praćenju zagađenja vazduha u regionu Sandžaka. Prvobitno razvijena za **Novi Pazar**, aplikacija je sada unapređena i proširena da uključi i **Tutin**.
